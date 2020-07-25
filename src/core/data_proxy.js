@@ -65,7 +65,16 @@ import { t } from '../locale/locale';
  *  },
  *  cols: {
  *    2: { width: 100, style: 1 }
- *  }
+ *  },
+ *  images: [
+ *    {
+ *      url: 'https://file.moobyyoho.com/moobyone/product/20190331669.jpg',
+ *      leftTopCol: 3,
+ *      leftTopRow: 4,
+ *      rightBottomCol: 6,
+ *      rightBottomRow: 14
+ *    }
+ *  ]
  * }
  */
 const defaultSettings = {

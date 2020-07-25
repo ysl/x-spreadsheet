@@ -293,6 +293,22 @@ function renderFreezeHighlightLine(fw, fh, ftw, fth) {
   draw.restore();
 }
 
+function renderImages(fw, fh, tx, ty, x, y) {
+  const { draw, data } = this;
+  if (data.images && Array.isArray(data.images)) {
+    data.images.forEach((image) => {
+      let ltCellInfo = data.cellRect(image.leftTopRow, image.leftTopCol);
+      let rbCellInfo = data.cellRect(image.rightBottomRow, image.rightBottomCol);
+      let imageX = ltCellInfo.left + fw - x;
+      let imageY = ltCellInfo.top + fh - y;
+      let width = rbCellInfo.left - ltCellInfo.left;
+      let height = rbCellInfo.top - ltCellInfo.top;
+      // console.log(fw, fh, tx, ty, x, y, imageX, imageY);
+      draw.drawImage(image.url, imageX, imageY, width, height);
+    });
+  }
+}
+
 /** end */
 class Table {
   constructor(el, data) {
@@ -358,6 +374,9 @@ class Table {
       // 5
       renderFreezeHighlightLine.call(this, fw, fh, tx, ty);
     }
+
+    // 6
+    renderImages.call(this, fw, fh, tx, ty, x, y);
   }
 
   clear() {

@@ -130,6 +130,9 @@ function drawFontLine(type, tx, ty, align, valign, blheight, blwidth) {
   );
 }
 
+// Prevent to download twice.
+var imageCache = {};
+
 class Draw {
   constructor(el, width, height) {
     this.el = el;
@@ -196,6 +199,30 @@ class Draw {
   fillText(text, x, y) {
     this.ctx.fillText(text, npx(x), npx(y));
     return this;
+  }
+
+  hashCode(s) {
+    return s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+  }
+
+  loadImage(url, cb) {
+    const hash = this.hashCode(url);
+    if (imageCache[hash]) {
+      cb(imageCache[hash]);
+    } else {
+      let img = new Image();
+      img.addEventListener('load', () => {
+        imageCache[hash] = img;
+        cb(img);
+      }, false);
+      img.src = url;
+    }
+  }
+
+  drawImage(url, x, y, width, height) {
+    this.loadImage(url, (img) => {
+      this.ctx.drawImage(img, x, y, width, height);
+    });
   }
 
   /*
