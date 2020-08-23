@@ -249,6 +249,11 @@ export default class Editor {
   }
 
   setCell(cell, validator) {
+    // Don't enter the editing mode when it's not editable.
+    if (cell && cell.editable === false) {
+      return;
+    }
+
     // console.log('::', validator);
     const { el, datepicker, suggest } = this;
     el.show();
