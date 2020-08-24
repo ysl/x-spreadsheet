@@ -12,7 +12,7 @@ class Spreadsheet {
   constructor(selectors, options = {}) {
     let targetEl = selectors;
     this.options = options;
-    this.sheetIndex = 1;
+    this.sheetIndex = 0;
     this.datas = [];
     if (typeof selectors === 'string') {
       targetEl = document.querySelector(selectors);
@@ -20,9 +20,13 @@ class Spreadsheet {
     this.bottombar = new Bottombar(() => {
       const d = this.addSheet();
       this.sheet.resetData(d);
+      // Set the new index, when manually add sheet.
+      this.sheetIndex = this.datas.length - 1;
     }, (index) => {
       const d = this.datas[index];
       this.sheet.resetData(d);
+      // Set the new index, when change sheet.
+      this.sheetIndex = index;
     }, () => {
       this.deleteSheet();
     }, (index, value) => {
@@ -38,7 +42,7 @@ class Spreadsheet {
   }
 
   addSheet(name, active = true) {
-    const n = name || `sheet${this.sheetIndex}`;
+    const n = name || `Sheet ${this.datas.length + 1}`;
     const d = new DataProxy(n, this.options);
     d.change = (...args) => {
       this.sheet.trigger('change', ...args);
@@ -46,7 +50,6 @@ class Spreadsheet {
     this.datas.push(d);
     // console.log('d:', n, d, this.datas);
     this.bottombar.addItem(n, active);
-    this.sheetIndex += 1;
     return d;
   }
 
@@ -55,6 +58,12 @@ class Spreadsheet {
     if (oldIndex >= 0) {
       this.datas.splice(oldIndex, 1);
       if (nindex >= 0) this.sheet.resetData(this.datas[nindex]);
+    }
+    // Set the new index.
+    if (nindex == -1) {
+      this.sheetIndex -= 1;
+    } else {
+      this.sheetIndex = nindex;
     }
   }
 
