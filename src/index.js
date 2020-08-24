@@ -47,6 +47,12 @@ class Spreadsheet {
     d.change = (...args) => {
       this.sheet.trigger('change', ...args);
     };
+    d.cellsDeleted = (range, what) => {
+      range.each((i, j) => {
+        this.sheet.trigger('cell-deleted', i, j, what);
+      });
+      this.sheet.trigger('cells-deleted', range, what);
+    }
     this.datas.push(d);
     // console.log('d:', n, d, this.datas);
     this.bottombar.addItem(n, active);

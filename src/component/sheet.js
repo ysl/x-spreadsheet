@@ -482,6 +482,11 @@ function dataSetCellText(text, state = 'finished') {
     this.trigger('cell-edited', text, ri, ci);
     table.render();
   }
+
+  // When the cell text is removed as empty string, call the DataProxy function.
+  if (text == '') {
+    data.deleteCell('text');
+  }
 }
 
 function insertDeleteRowColumn(type) {

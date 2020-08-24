@@ -142,6 +142,7 @@ function copyPaste(srcCellRange, dstCellRange, what, autofill = false) {
   // delete dest merge
   if (what === 'all' || what === 'format') {
     rows.deleteCells(dstCellRange, what);
+    this.cellsDeleted(dstCellRange, what);
     merges.deleteWithin(dstCellRange);
   }
   rows.copyPaste(srcCellRange, dstCellRange, what, autofill, (ri, ci, cell) => {
@@ -353,6 +354,7 @@ export default class DataProxy {
     this.clipboard = new Clipboard();
     this.autoFilter = new AutoFilter();
     this.change = () => {};
+    this.cellsDeleted = () => {};
     this.exceptRowSet = new Set();
     this.sortedRowMap = new Map();
     this.unsortedRowMap = new Map();
@@ -721,6 +723,7 @@ export default class DataProxy {
         this.merges.add(selector.range);
         // delete merge cells
         this.rows.deleteCells(selector.range);
+        this.cellsDeleted(selector.range, what);
         // console.log('cell:', cell, this.d);
         this.rows.setCell(sri, sci, cell);
       });
@@ -789,6 +792,7 @@ export default class DataProxy {
     const { selector } = this;
     this.changeData(() => {
       this.rows.deleteCells(selector.range, what);
+      this.cellsDeleted(selector.range, what);
       if (what === 'all' || what === 'format') {
         this.merges.deleteWithin(selector.range);
       }
