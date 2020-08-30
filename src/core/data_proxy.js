@@ -74,6 +74,9 @@ import { t } from '../locale/locale';
  *      rightBottomCol: 6,
  *      rightBottomRow: 14
  *    }
+ *  ],
+ *  userEditing: [
+ *   { col: 1, row: 2, mode: 1 }
  *  ]
  * }
  */
@@ -345,6 +348,7 @@ export default class DataProxy {
     this.validations = new Validations();
     this.hyperlinks = {};
     this.comments = {};
+    this.editingUsers = [];
     // save data end
 
     // don't save object
@@ -358,6 +362,7 @@ export default class DataProxy {
     this.exceptRowSet = new Set();
     this.sortedRowMap = new Map();
     this.unsortedRowMap = new Map();
+    this.editingUsersChanged = () => {};
   }
 
   addValidation(mode, ref, validator) {
@@ -1176,5 +1181,22 @@ export default class DataProxy {
       validations: validations.getData(),
       autofilter: autoFilter.getData(),
     };
+  }
+
+  changeEditingUser(id, col, row, mode) {
+    let index = this.editingUsers.findIndex(u => u.id == id);
+    if (index >= 0) {
+      let cellIndex = this.editingUsers[index].cells.findIndex(c => c.col == col && c.row == row);
+      if (cellIndex >= 0) {
+        this.editingUsers[index].cells[cellIndex].mode = mode;
+      } else {
+        this.editingUsers[index].cells.push({
+          col: col,
+          row: row,
+          mode: mode
+        });
+      }
+      this.editingUsersChanged(this.editingUsers[index]);
+    }
   }
 }

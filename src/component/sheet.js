@@ -7,6 +7,7 @@ import Selector from './selector';
 import Editor from './editor';
 import Print from './print';
 import ContextMenu from './contextmenu';
+import UserEditing from './user_editing';
 import Table from './table';
 import Toolbar from './toolbar/index';
 import ModalValidation from './modal_validation';
@@ -68,7 +69,11 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
     table, selector, toolbar, data,
     contextMenu,
   } = this;
-  contextMenu.setMode((ri === -1 || ci === -1) ? 'row-col' : 'range');
+  if (multiple) {
+    contextMenu.setMode((ri === -1 || ci === -1) ? 'row-col' : 'range');
+  } else {
+    contextMenu.setMode('cell');
+  }
   const cell = data.getCell(ri, ci);
   if (multiple) {
     selector.setEnd(ri, ci, moving);
@@ -570,6 +575,7 @@ function sheetInitEvents() {
     horizontalScrollbar,
     editor,
     contextMenu,
+    userEditing,
     toolbar,
     modalValidation,
     sortFilter,
@@ -650,6 +656,10 @@ function sheetInitEvents() {
   editor.change = (state, itext) => {
     dataSetCellText.call(this, itext, state);
   };
+  // user editing
+  userEditing.change = (id, mode) => {
+    this.data.changeEditingUser(id, this.data.selector.ci, this.data.selector.ri, mode);
+  };
   // modal validation
   modalValidation.change = (action, ...args) => {
     if (action === 'save') {
@@ -675,6 +685,8 @@ function sheetInitEvents() {
       paste.call(this, 'format');
     } else if (type === 'hide') {
       hideRowsOrCols.call(this);
+    } else if (type === 'user-editable') {
+      userEditing.render();
     } else {
       insertDeleteRowColumn.call(this, type);
     }
@@ -869,6 +881,8 @@ export default class Sheet {
     this.modalValidation = new ModalValidation();
     // contextMenu
     this.contextMenu = new ContextMenu(() => this.getRect(), !showContextmenu);
+    // user editing setting
+    this.userEditing = new UserEditing(() => this.getRect(), data);
     // selector
     this.selector = new Selector(data);
     this.overlayerCEl = h('div', `${cssPrefix}-overlayer-content`)
@@ -889,6 +903,7 @@ export default class Sheet {
       this.verticalScrollbar.el,
       this.horizontalScrollbar.el,
       this.contextMenu.el,
+      this.userEditing.el,
       this.modalValidation.el,
       this.sortFilter.el,
     );
@@ -923,6 +938,7 @@ export default class Sheet {
     this.print.resetData(data);
     this.selector.resetData(data);
     this.table.resetData(data);
+    this.userEditing.resetData(data);
   }
 
   loadData(data) {

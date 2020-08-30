@@ -43,6 +43,10 @@ export default {
     cellnonprintable: 'Disable export',
     celleditable: 'Enable editing',
     cellnoneditable: 'Disable editing',
+    usereditable: 'User editing',
+  },
+  userediting: {
+    allowCellEditing: 'Allow cell editing'
   },
   print: {
     size: 'Paper size',

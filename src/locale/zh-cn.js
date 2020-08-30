@@ -43,6 +43,10 @@ export default {
     cellnonprintable: '不可打印',
     celleditable: '可编辑',
     cellnoneditable: '不可编辑',
+    usereditable: '使用者編輯權限',
+  },
+  userediting: {
+    allowCellEditing: '允許使用者編輯此儲存格'
   },
   print: {
     size: '纸张大小',

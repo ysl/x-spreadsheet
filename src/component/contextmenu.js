@@ -25,13 +25,15 @@ const menuItems = [
   { key: 'divider' },
   { key: 'cell-editable', title: tf('contextmenu.celleditable') },
   { key: 'cell-non-editable', title: tf('contextmenu.cellnoneditable') },
+  // Customized
+  { key: 'user-editable', title: tf('contextmenu.usereditable') },
 ];
 
 function buildMenuItem(item) {
   if (item.key === 'divider') {
     return h('div', `${cssPrefix}-item divider`);
   }
-  return h('div', `${cssPrefix}-item`)
+  return h('div', `${cssPrefix}-item menu-item-${item.key}`)
     .on('click', () => {
       this.itemClick(item.key);
       this.hide();
@@ -61,8 +63,15 @@ export default class ContextMenu {
   // row-col: the whole rows or the whole cols
   // range: select range
   setMode(mode) {
-    const hideEl = this.menuItems[12];
+    let hideEl = this.menuItems[12];
     if (mode === 'row-col') {
+      hideEl.show();
+    } else {
+      hideEl.hide();
+    }
+
+    hideEl = this.menuItems[21];
+    if (mode === 'cell') {
       hideEl.show();
     } else {
       hideEl.hide();

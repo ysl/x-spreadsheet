@@ -53,6 +53,9 @@ class Spreadsheet {
       });
       this.sheet.trigger('cells-deleted', range, what);
     }
+    d.editingUsersChanged = (user) => {
+      this.sheet.trigger('editing-users-changed', user);
+    }
     this.datas.push(d);
     // console.log('d:', n, d, this.datas);
     this.bottombar.addItem(n, active);
