@@ -162,6 +162,18 @@ function renderContent(viewRange, fw, fh, tx, ty) {
   // 3 render autofilter
   renderAutofilter.call(this, viewRange);
 
+  // 4 highlight user editable cell
+  if (data.settings.mode == 'limit') {
+    if (data.settings.user.editableCells) {
+      data.settings.user.editableCells.forEach((cell) => {
+        if (data.id == cell.sheet_id) {
+          const dbox = getDrawBox(data, cell.row, cell.col);
+          draw.highlight(dbox);
+        }
+      });
+    }
+  }
+
   draw.restore();
 }
 

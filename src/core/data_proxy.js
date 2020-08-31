@@ -1201,11 +1201,13 @@ export default class DataProxy {
     }
   }
 
-  checkUserCanEditCurrentCell() {
+  checkUserCanEditCurrentCell(ri = null, ci = null) {
     if (this.settings.user && this.settings.user.editableCells) {
       let sheetId = this.id;
-      let ri = this.selector.ri;
-      let ci = this.selector.ci;
+      if (ri === null || ci === null) {
+        ri = this.selector.ri;
+        ci = this.selector.ci;
+      }
       let index = this.settings.user.editableCells.findIndex(c => c.sheet_id == sheetId && c.row == ri && c.col == ci);
       if (index >= 0) {
         return true;

@@ -405,6 +405,16 @@ class Draw {
     ctx.restore();
   }
 
+  highlight(box) {
+    const { ctx } = this;
+    const { x, y, width, height } = box;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255, 255, 0, .85)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x, y , width, height);
+    ctx.restore();
+  }
+
   rect(box, dtextcb) {
     const { ctx } = this;
     const {
