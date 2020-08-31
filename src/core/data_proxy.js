@@ -81,7 +81,8 @@ import { t } from '../locale/locale';
  * }
  */
 const defaultSettings = {
-  mode: 'edit', // edit | read
+  user: {},
+  mode: 'edit', // edit | read | limit
   view: {
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
@@ -1198,5 +1199,18 @@ export default class DataProxy {
       }
       this.editingUsersChanged(this.editingUsers[index]);
     }
+  }
+
+  checkUserCanEditCurrentCell() {
+    if (this.settings.user && this.settings.user.editableCells) {
+      let sheetId = this.id;
+      let ri = this.selector.ri;
+      let ci = this.selector.ci;
+      let index = this.settings.user.editableCells.findIndex(c => c.sheet_id == sheetId && c.row == ri && c.col == ci);
+      if (index >= 0) {
+        return true;
+      }
+    }
+    return false;
   }
 }
