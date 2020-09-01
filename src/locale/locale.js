@@ -1,9 +1,11 @@
 /* global window */
 import en from './en';
+import zh_tw from './zh-tw';
 
 let $lang = 'en';
 const $messages = {
   en,
+  zh_tw
 };
 
 function translate(key, messages) {
