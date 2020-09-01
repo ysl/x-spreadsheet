@@ -17,7 +17,7 @@ export default class UserEditing {
     const users = this.data.editingUsers.map(u => {
       const chk = new FormInput('', 'chk');
       chk.input.attr('type', 'checkbox');
-      if (u.cells.findIndex(c => c.row == ri && c.col == ci && c.mode == 1) > 0) {
+      if (u.cells.findIndex(c => c.row == ri && c.col == ci && c.mode == 1) >= 0) {
         chk.input.attr('checked', true);
       }
       chk.input.on('change', (e) => {
