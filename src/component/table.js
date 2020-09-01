@@ -185,7 +185,7 @@ function renderContent(viewRange, fw, fh, tx, ty) {
         if (user.cells) {
           user.cells.forEach((cell) => {
             viewRange.each((ri, ci) => { // Check the cell in view
-              if (ri == cell.row && ci == cell.col) {
+              if (ri == cell.row && ci == cell.col && cell.mode == 1) {
                 const dbox = getDrawBox(data, cell.row, cell.col);
                 draw.highlight(dbox);
               }
