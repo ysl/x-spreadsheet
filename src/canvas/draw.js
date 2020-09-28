@@ -221,7 +221,7 @@ class Draw {
 
   drawImage(url, x, y, width, height) {
     this.loadImage(url, (img) => {
-      this.ctx.drawImage(img, x, y, width, height);
+      this.ctx.drawImage(img, npx(x), npx(y), npx(width), npx(height));
     });
   }
 
@@ -411,7 +411,7 @@ class Draw {
     ctx.save();
     ctx.strokeStyle = 'rgba(255, 255, 0, .85)';
     ctx.lineWidth = 3;
-    ctx.strokeRect(x, y , width, height);
+    ctx.strokeRect(npx(x), npx(y) , npx(width), npx(height));
     ctx.restore();
   }
 
