@@ -1184,21 +1184,8 @@ export default class DataProxy {
     };
   }
 
-  changeEditingUser(id, col, row, mode) {
-    let index = this.editingUsers.findIndex(u => u.id == id);
-    if (index >= 0) {
-      let cellIndex = this.editingUsers[index].cells.findIndex(c => c.col == col && c.row == row);
-      if (cellIndex >= 0) {
-        this.editingUsers[index].cells[cellIndex].mode = mode;
-      } else {
-        this.editingUsers[index].cells.push({
-          col: col,
-          row: row,
-          mode: mode
-        });
-      }
-      this.editingUsersChanged(this.editingUsers[index]);
-    }
+  changeEditingUser(user) {
+    this.editingUsersChanged(user);
   }
 
   checkUserCanEditCurrentCell(ri = null, ci = null) {

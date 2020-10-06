@@ -580,6 +580,11 @@ function sortFilterChange(ci, order, operator, value) {
   sheetReset.call(this);
 }
 
+function changeUserEditableCell(user) {
+  this.data.changeEditingUser(user);
+  sheetReset.call(this);
+}
+
 function sheetInitEvents() {
   const {
     selector,
@@ -672,8 +677,8 @@ function sheetInitEvents() {
     dataSetCellText.call(this, itext, state);
   };
   // user editing
-  userEditing.change = (id, mode) => {
-    this.data.changeEditingUser(id, this.data.selector.ci, this.data.selector.ri, mode);
+  userEditing.change = (user) => {
+    changeUserEditableCell.call(this, user);
   };
   // modal validation
   modalValidation.change = (action, ...args) => {

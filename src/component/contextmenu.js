@@ -69,13 +69,6 @@ export default class ContextMenu {
     } else {
       hideEl.hide();
     }
-
-    hideEl = this.menuItems[21];
-    if (mode === 'cell') {
-      hideEl.show();
-    } else {
-      hideEl.hide();
-    }
   }
 
   hide() {
