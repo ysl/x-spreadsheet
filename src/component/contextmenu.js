@@ -27,6 +27,7 @@ const menuItems = [
   { key: 'cell-non-editable', title: tf('contextmenu.cellnoneditable') },
   // Customized
   { key: 'user-editable', title: tf('contextmenu.usereditable') },
+  { key: 'notification', title: tf('contextmenu.notification') },
 ];
 
 function buildMenuItem(item) {
@@ -65,6 +66,13 @@ export default class ContextMenu {
   setMode(mode) {
     let hideEl = this.menuItems[12];
     if (mode === 'row-col') {
+      hideEl.show();
+    } else {
+      hideEl.hide();
+    }
+
+    hideEl = this.menuItems[22];
+    if (mode === 'cell') {
       hideEl.show();
     } else {
       hideEl.hide();

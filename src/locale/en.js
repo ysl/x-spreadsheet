@@ -44,6 +44,7 @@ export default {
     celleditable: 'Enable editing',
     cellnoneditable: 'Disable editing',
     usereditable: 'User editing',
+    notification: 'Execute Program Notification',
   },
   userediting: {
     allowCellEditing: 'Allow cell editing'
@@ -102,6 +103,7 @@ export default {
     remove: 'Remove',
     save: 'Save',
     ok: 'OK',
+    create: 'Create',
   },
   sort: {
     desc: 'Sort Z -> A',
@@ -136,5 +138,12 @@ export default {
       eq: 'equal to',
       neq: 'not equal to',
     },
+  },
+  notification: {
+    create_new_notificaiton: 'Create a new notification',
+    title: 'Title',
+    position: 'Position',
+    file: 'File',
+    remind_at: 'Remind At',
   },
 };

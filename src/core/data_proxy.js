@@ -77,6 +77,9 @@ import { t } from '../locale/locale';
  *  ],
  *  userEditing: [
  *   { col: 1, row: 2, mode: 1 }
+ *  ],
+ *  notifications: [
+ *   { title: '', col: 1, row: 2, file_id: 3 }
  *  ]
  * }
  */
@@ -116,6 +119,7 @@ const defaultSettings = {
     },
     format: 'normal',
   },
+  files: [],
 };
 
 const toolbarHeight = 41;
@@ -350,6 +354,7 @@ export default class DataProxy {
     this.hyperlinks = {};
     this.comments = {};
     this.editingUsers = [];
+    this.notifications = [];
     // save data end
 
     // don't save object
@@ -363,7 +368,10 @@ export default class DataProxy {
     this.exceptRowSet = new Set();
     this.sortedRowMap = new Map();
     this.unsortedRowMap = new Map();
+
+    // Export for index.js.
     this.editingUsersChanged = () => {};
+    this.notificationChanged = () => {};
   }
 
   addValidation(mode, ref, validator) {
@@ -1186,6 +1194,10 @@ export default class DataProxy {
 
   changeEditingUser(user) {
     this.editingUsersChanged(user);
+  }
+
+  changeNotification(action, notification) {
+    return this.notificationChanged(action, notification);
   }
 
   checkUserCanEditCurrentCell(ri = null, ci = null) {

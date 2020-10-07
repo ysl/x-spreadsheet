@@ -44,6 +44,7 @@ export default {
     celleditable: '可编辑',
     cellnoneditable: '不可编辑',
     usereditable: '使用者編輯權限',
+    notification: '執行程式提醒',
   },
   userediting: {
     allowCellEditing: '允許使用者編輯此儲存格'
@@ -102,6 +103,7 @@ export default {
     remove: '删除',
     save: '保存',
     ok: '确认',
+    create: '新增',
   },
   sort: {
     desc: '降序',
@@ -136,5 +138,12 @@ export default {
       eq: '等于',
       neq: '不等于',
     },
+  },
+  notification: {
+    create_new_notificaiton: '建立新的提醒',
+    title: '標題',
+    position: '位置',
+    file: '檔案',
+    remind_at: '提醒時間',
   },
 };

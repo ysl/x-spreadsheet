@@ -14,6 +14,10 @@ class Spreadsheet {
     this.options = options;
     this.sheetIndex = 0;
     this.datas = [];
+
+    // Allow outside to overwrite.
+    this.notificationChangedFn = () => { return Promise.resolve(); };
+
     if (typeof selectors === 'string') {
       targetEl = document.querySelector(selectors);
     }
@@ -55,6 +59,9 @@ class Spreadsheet {
     }
     d.editingUsersChanged = (user) => {
       this.sheet.trigger('editing-users-changed', user);
+    }
+    d.notificationChanged = (action, notification) => {
+      return this.notificationChangedFn(action, notification);
     }
     this.datas.push(d);
     // console.log('d:', n, d, this.datas);

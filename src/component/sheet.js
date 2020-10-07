@@ -8,6 +8,7 @@ import Editor from './editor';
 import Print from './print';
 import ContextMenu from './contextmenu';
 import UserEditing from './user_editing';
+import Notification from './notification';
 import Table from './table';
 import Toolbar from './toolbar/index';
 import ModalValidation from './modal_validation';
@@ -67,7 +68,7 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
   if (ri === -1 && ci === -1) return;
   const {
     table, selector, toolbar, data,
-    contextMenu,
+    contextMenu, notification,
   } = this;
   if (multiple) {
     contextMenu.setMode((ri === -1 || ci === -1) ? 'row-col' : 'range');
@@ -82,6 +83,7 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
     // trigger click event
     selector.set(ri, ci, indexesUpdated);
     this.trigger('cell-selected', cell, ri, ci);
+    notification.onCellSelected(cell, ri, ci);
   }
   toolbar.reset();
   table.render();
@@ -585,6 +587,10 @@ function changeUserEditableCell(user) {
   sheetReset.call(this);
 }
 
+function changeNotification(action, notification) {
+  return this.data.changeNotification(action, notification);
+}
+
 function sheetInitEvents() {
   const {
     selector,
@@ -596,6 +602,7 @@ function sheetInitEvents() {
     editor,
     contextMenu,
     userEditing,
+    notification,
     toolbar,
     modalValidation,
     sortFilter,
@@ -680,6 +687,15 @@ function sheetInitEvents() {
   userEditing.change = (user) => {
     changeUserEditableCell.call(this, user);
   };
+  notification.createFn = (notification) => {
+    return changeNotification.call(this, 'create', notification);
+  }
+  notification.updateFn = (notification) => {
+    return changeNotification.call(this, 'update', notification);
+  }
+  notification.removeFn = (notification) => {
+    return changeNotification.call(this, 'remove', notification);
+  }
   // modal validation
   modalValidation.change = (action, ...args) => {
     if (action === 'save') {
@@ -707,6 +723,8 @@ function sheetInitEvents() {
       hideRowsOrCols.call(this);
     } else if (type === 'user-editable') {
       userEditing.render();
+    } else if (type === 'notification') {
+      notification.render();
     } else {
       insertDeleteRowColumn.call(this, type);
     }
@@ -903,6 +921,8 @@ export default class Sheet {
     this.contextMenu = new ContextMenu(() => this.getRect(), !showContextmenu);
     // user editing setting
     this.userEditing = new UserEditing(() => this.getRect(), data);
+    // notificaation
+    this.notification = new Notification(() => this.getRect(), data, this);
     // selector
     this.selector = new Selector(data);
     this.overlayerCEl = h('div', `${cssPrefix}-overlayer-content`)
@@ -924,6 +944,7 @@ export default class Sheet {
       this.horizontalScrollbar.el,
       this.contextMenu.el,
       this.userEditing.el,
+      this.notification.el,
       this.modalValidation.el,
       this.sortFilter.el,
     );
@@ -959,6 +980,7 @@ export default class Sheet {
     this.selector.resetData(data);
     this.table.resetData(data);
     this.userEditing.resetData(data);
+    this.notification.resetData(data, this);
   }
 
   loadData(data) {
