@@ -83,8 +83,16 @@ export default class Notification {
   }
 
   onCellSelected(cell, ri, ci) {
+    // If user click the notification cell, show the sidebar.
+    let found = this.data.notifications.find((n) => {
+      return (n.row == ri && n.col == ci);
+    });
+    if (found) {
+      return this.render();
+    }
+
     if (this.isShow()) {
-      this.render();
+      return this.render();
     }
   }
 

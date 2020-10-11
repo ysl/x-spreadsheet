@@ -415,6 +415,16 @@ class Draw {
     ctx.restore();
   }
 
+  highlightNotificationCell(box) {
+    const { ctx } = this;
+    const { x, y, width, height } = box;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255, 0, 0, .85)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(npx(x), npx(y) , npx(width), npx(height));
+    ctx.restore();
+  }
+
   rect(box, dtextcb) {
     const { ctx } = this;
     const {

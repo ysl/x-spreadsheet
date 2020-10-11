@@ -196,6 +196,36 @@ function renderContent(viewRange, fw, fh, tx, ty) {
     }
   }
 
+  // 6 highlight current user notification
+  if (data.settings.mode == 'limit') {
+    if (data.settings.user.notifications) {
+      data.settings.user.notifications.forEach((n) => {
+        if (data.id == n.sheet_id) {
+          viewRange.each((ri, ci) => { // Check the cell in view
+            if (ri == n.row && ci == n.col) {
+              const dbox = getDrawBox(data, n.row, n.col);
+              draw.highlightNotificationCell(dbox);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  // 7 highlight other operators' notification  (only for admin)
+  if (data.settings.mode == 'edit') {
+    if (data.notifications) {
+      data.notifications.forEach((n) => {
+        viewRange.each((ri, ci) => { // Check the cell in view
+          if (ri == n.row && ci == n.col) {
+            const dbox = getDrawBox(data, n.row, n.col);
+            draw.highlightNotificationCell(dbox);
+          }
+        });
+      });
+    }
+  }
+
   draw.restore();
 }
 
