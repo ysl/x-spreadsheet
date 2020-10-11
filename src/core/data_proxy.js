@@ -79,7 +79,7 @@ import { t } from '../locale/locale';
  *   { col: 1, row: 2, mode: 1 }
  *  ],
  *  notifications: [
- *   { title: '', col: 1, row: 2, file_id: 3 }
+ *   { title: '', col: 1, row: 2, file_id: 3, user_ids: [] }
  *  ]
  * }
  */
@@ -119,6 +119,7 @@ const defaultSettings = {
     },
     format: 'normal',
   },
+  users: [],
   files: [],
 };
 

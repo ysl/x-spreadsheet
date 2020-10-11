@@ -145,5 +145,6 @@ export default {
     position: 'Position',
     file: 'File',
     remind_at: 'Remind At',
+    remind_user: 'Remind User',
   },
 };

@@ -48,6 +48,18 @@ export default class Notification {
     return `${arr[0]}:${arr[1]}:00`;
   }
 
+  setUserIds(userIds, targetId, checked) {
+    if (checked) {
+      userIds.push(targetId);
+    } else {
+      let index = userIds.indexOf(targetId);
+      if (index > -1) {
+        userIds.splice(index, 1);
+      }
+    }
+    return userIds;
+  }
+
   getFilenameById(fileId) {
     const files = this.data.settings.files;
     const found = files.find(f => f.id == fileId);
@@ -145,6 +157,27 @@ export default class Notification {
       100,
     );
 
+    const users = this.data.settings.users;
+    const userFields = users.map((u) => {
+      const chk = new FormInput('', 'chk');
+      chk.input.attr('type', 'checkbox');
+      if (n.user_ids.indexOf(u.id) > -1) {
+        chk.input.attr('checked', true);
+      }
+      chk.input.on('change', (e) => {
+        let newList = [];
+        if (e.target.checked) {
+          newList = this.setUserIds(n.user_ids, u.id, true);
+        } else {
+          newList = this.setUserIds(n.user_ids, u.id, false);
+        }
+        this.onNotificationUpdate(n, { user_ids: newList });
+      });
+      const userItem = h('span', 'user-name').children(`${u.name} - ${u.email}`);
+      return h('div', 'user-item').children(chk.el, userItem);
+    });
+    const userList = h('div', 'user-list').children(t('notification.remind_user')+':', ...userFields);
+
     const buttons = [];
     if (isNew) {
       const confirmBtn = new Button('ok', 'ok').on('click', () => {
@@ -169,10 +202,9 @@ export default class Notification {
       });
       buttons.push(removeBtn);
     }
-
     const actions = h('div', 'actions').children(...buttons);
 
-    return h('div', `card ${isNew ? 'new-card' : ''}`).children(note, titleField.el, position.el, fileList.el, timeField.el, actions.el);
+    return h('div', `card ${isNew ? 'new-card' : ''}`).children(note, titleField.el, position.el, fileList.el, timeField.el, userList.el, actions.el);
   }
 
   buildCreateForm() {
@@ -183,6 +215,7 @@ export default class Notification {
       row: selector.ri,
       remind_at: '00:00:00',
       file_id: null,
+      user_ids: [],
     }
     const card = this.buildCard(this.tmpNotification, true);
     const form = h('div', 'new-card').children(card);

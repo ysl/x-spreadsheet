@@ -145,5 +145,6 @@ export default {
     position: '位置',
     file: '檔案',
     remind_at: '提醒時間',
+    remind_user: '提醒對象',
   },
 };
