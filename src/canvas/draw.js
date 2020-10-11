@@ -405,7 +405,7 @@ class Draw {
     ctx.restore();
   }
 
-  highlight(box) {
+  highlightEditingCell(box) {
     const { ctx } = this;
     const { x, y, width, height } = box;
     ctx.save();

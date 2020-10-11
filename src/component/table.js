@@ -170,7 +170,7 @@ function renderContent(viewRange, fw, fh, tx, ty) {
           viewRange.each((ri, ci) => { // Check the cell in view
             if (ri == cell.row && ci == cell.col) {
               const dbox = getDrawBox(data, cell.row, cell.col);
-              draw.highlight(dbox);
+              draw.highlightEditingCell(dbox);
             }
           });
         }
@@ -178,7 +178,7 @@ function renderContent(viewRange, fw, fh, tx, ty) {
     }
   }
 
-  // 5 highlight other operator edtiable cell
+  // 5 highlight other operator edtiable cell (only for admin)
   if (data.settings.mode == 'edit') {
     if (data.editingUsers) {
       data.editingUsers.forEach((user) => {
@@ -187,7 +187,7 @@ function renderContent(viewRange, fw, fh, tx, ty) {
             viewRange.each((ri, ci) => { // Check the cell in view
               if (ri == cell.row && ci == cell.col && cell.mode == 1) {
                 const dbox = getDrawBox(data, cell.row, cell.col);
-                draw.highlight(dbox);
+                draw.highlightEditingCell(dbox);
               }
             });
           });
