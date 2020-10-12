@@ -144,10 +144,12 @@ export default {
     title: 'Title',
     position: 'Position',
     file: 'File',
-    remind_at: 'Remind At',
+    remind_at: 'Execute at',
     remind_user: 'Remind User',
     please_select_a_file: 'Please select a file',
     at_least_one_user: 'At least select a user',
     confirm_to_remove: 'Delete?',
+    program: 'Program',
+    download: 'Download',
   },
 };

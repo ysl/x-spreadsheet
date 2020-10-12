@@ -3,11 +3,11 @@ import Suggest from './suggest';
 import { cssPrefix } from '../config';
 
 export default class FormSelect {
-  constructor(key, items, width, getTitle = it => it, change = () => {}) {
+  constructor(key, items, width, getTitle = it => it, change = () => {}, className='') {
     this.key = key;
     this.getTitle = getTitle;
     this.vchange = () => {};
-    this.el = h('div', `${cssPrefix}-form-select`);
+    this.el = h('div', `${cssPrefix}-form-select ${className}`);
     this.suggest = new Suggest(items.map(it => ({ key: it, title: this.getTitle(it) })), (it) => {
       this.itemClick(it.key);
       change(it.key);

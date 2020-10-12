@@ -60,10 +60,14 @@ export default class Notification {
     return userIds;
   }
 
-  getFilenameById(fileId) {
+  getFileAttrById(fileId, attr) {
     const files = this.data.settings.files;
     const found = files.find(f => f.id == fileId);
-    return found ? found.name : '-';
+    if (attr == 'name') {
+      return found ? found.name : '-';
+    } else {
+       return found ? found[attr] : '';
+    }
   }
 
   getTimePart(time, isHour=true) {
@@ -111,14 +115,20 @@ export default class Notification {
   }
 
   buildCard(n, isNew=false) {
+    const isEditingMode = this.data.settings.mode == 'edit';
     const note = h('div', 'title').children(isNew ? t('notification.create_new_notificaiton') : '');
 
     const defaultTitle = n.title ? n.title : '';
-    const input = new FormInput('100%', '');
-    input.val(defaultTitle);
-    input.input.on('change', ({ target }) => {
-      this.onNotificationUpdate(n, { title: target.value });
-    });
+    let input;
+    if (isEditingMode) {
+      input = new FormInput('100%', '');
+      input.val(defaultTitle);
+      input.input.on('change', ({ target }) => {
+        this.onNotificationUpdate(n, { title: target.value });
+      });
+    } else {
+      input = h('span').children(defaultTitle);
+    }
     const titleField = new FormField(
       input,
       { required: true },
@@ -127,16 +137,27 @@ export default class Notification {
     );
 
     const files = this.data.settings.files;
-    const defaultFilename = this.getFilenameById(n.file_id);
+    const defaultFilename = this.getFileAttrById(n.file_id, 'name');
     const fileList = new FormField(
       new FormSelect(defaultFilename,
         files,
         '100%',
         file => typeof file == 'object' ? file.name : file,
-        file => { this.onNotificationUpdate(n, { file_id: file.id }) }
+        file => { this.onNotificationUpdate(n, { file_id: file.id }) },
+        'file-list'
       ),
       { required: true },
       `${t('notification.file')}:`,
+      60,
+    );
+
+    const downloadLink = h('a').children(t('notification.download'));
+    downloadLink.attr('href', this.getFileAttrById(n.file_id, 'url'));
+    downloadLink.attr('target', '_blank');
+    const downloadField = new FormField(
+      downloadLink,
+      { required: true },
+      `${t('notification.program')}:`,
       60,
     );
 
@@ -147,22 +168,27 @@ export default class Notification {
       `${t('notification.position')}:`,
       60,
     );
-    const defaultHour = this.getTimePart(n.remind_at, true);
-    const hour = new FormSelect(defaultHour,
-      Array.from(Array(24).keys()).map(i => this.pad(i, 2)),
-      '100%',
-      h => h,
-      h => { this.onNotificationUpdate(n, { remind_at: this.setTimeString(n.remind_at, h)}) }
-    );
 
+    const defaultHour = this.getTimePart(n.remind_at, true);
     const defaultMinute = this.getTimePart(n.remind_at, false);
-    const minute = new FormSelect(defaultMinute,
-      Array.from(Array(60).keys()).map(i => this.pad(i, 2)),
-      '100%',
-      m => m,
-      m => { this.onNotificationUpdate(n, { remind_at: this.setTimeString(n.remind_at, null, m)}) }
-    );
-    const time = h('span').children(hour.el, ':', minute.el);
+    let time;
+    if (isEditingMode) {
+      let hour = new FormSelect(defaultHour,
+        Array.from(Array(24).keys()).map(i => this.pad(i, 2)),
+        '100%',
+        h => h,
+        h => { this.onNotificationUpdate(n, { remind_at: this.setTimeString(n.remind_at, h)}) }
+      );
+      let minute = new FormSelect(defaultMinute,
+        Array.from(Array(60).keys()).map(i => this.pad(i, 2)),
+        '100%',
+        m => m,
+        m => { this.onNotificationUpdate(n, { remind_at: this.setTimeString(n.remind_at, null, m)}) }
+      );
+      time = h('span').children(hour.el, ':', minute.el);
+    } else {
+      time = h('span').children(`${defaultHour}:${defaultMinute}`);
+    }
     const timeField = new FormField(
       time,
       { required: true },
@@ -234,7 +260,15 @@ export default class Notification {
     }
     const actions = h('div', 'actions').children(...buttons);
 
-    return h('div', `card ${isNew ? 'new-card' : ''}`).children(note, titleField.el, position.el, fileList.el, timeField.el, userList.el, actions.el);
+    return h('div', `card ${isNew ? 'new-card' : ''}`).children(
+      note,
+      titleField.el,
+      position.el,
+      isEditingMode ? fileList.el : downloadField.el,
+      timeField.el,
+      isEditingMode ? userList.el : '',
+      isEditingMode ? actions.el : '',
+    );
   }
 
   buildCreateForm() {
@@ -291,6 +325,7 @@ export default class Notification {
     const sidebar = h('div', 'sidebar');
     const header = h('div', 'sidebar-header')
     const title = h('span', 'title').html(t('contextmenu.notification'));
+    const isEditingMode = this.data.settings.mode == 'edit';
     const createBtn = new Button('create', 'create').on('click', () => {
       this.showCreateForm = true;
       this.render();
@@ -301,7 +336,7 @@ export default class Notification {
     });
 
 
-    header.children(title, (this.showCreateForm ? '' : createBtn), closeButton);
+    header.children(title, (!this.showCreateForm && isEditingMode ? createBtn : ''), closeButton);
     sidebar.children(header);
 
     const createForm = this.buildCreateForm();
