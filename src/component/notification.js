@@ -133,7 +133,7 @@ export default class Notification {
       input,
       { required: true },
       `${t('notification.title')}:`,
-      60,
+      30,
     );
 
     const files = this.data.settings.files;
@@ -144,11 +144,11 @@ export default class Notification {
         '100%',
         file => typeof file == 'object' ? file.name : file,
         file => { this.onNotificationUpdate(n, { file_id: file.id }) },
-        'file-list'
+        'file-select'
       ),
       { required: true },
       `${t('notification.file')}:`,
-      60,
+      30,
     );
 
     const downloadLink = h('a').children(t('notification.download'));
@@ -158,7 +158,7 @@ export default class Notification {
       downloadLink,
       { required: true },
       `${t('notification.program')}:`,
-      60,
+      30,
     );
 
     const colAndRow = h('span').children(this.getPosition(n.col, n.row));
@@ -166,7 +166,7 @@ export default class Notification {
       colAndRow,
       { required: true },
       `${t('notification.position')}:`,
-      60,
+      30,
     );
 
     const defaultHour = this.getTimePart(n.remind_at, true);
