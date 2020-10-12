@@ -203,7 +203,9 @@ export default class Notification {
         }
 
         this.createFn(this.tmpNotification)
-          .then(() => {
+          .then((notifications) => {
+            // Overwrite the data.
+            this.data.setNotifications(notifications);
             this.showCreateForm = false;
             this.render();
           });
@@ -222,7 +224,9 @@ export default class Notification {
         }
 
         this.removeFn(n)
-          .then(() => {
+          .then((notifications) => {
+            // Overwrite the data.
+            this.data.setNotifications(notifications);
             this.render();
           });
       });
