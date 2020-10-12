@@ -8,7 +8,8 @@ import Editor from './editor';
 import Print from './print';
 import ContextMenu from './contextmenu';
 import UserEditing from './user_editing';
-import Notification from './notification';
+import Notification from './notification'
+import Alert from './alert';
 import Table from './table';
 import Toolbar from './toolbar/index';
 import ModalValidation from './modal_validation';
@@ -603,6 +604,7 @@ function sheetInitEvents() {
     contextMenu,
     userEditing,
     notification,
+    alert,
     toolbar,
     modalValidation,
     sortFilter,
@@ -921,8 +923,10 @@ export default class Sheet {
     this.contextMenu = new ContextMenu(() => this.getRect(), !showContextmenu);
     // user editing setting
     this.userEditing = new UserEditing(() => this.getRect(), data);
-    // notificaation
+    // notification
     this.notification = new Notification(() => this.getRect(), data, this);
+    // alert
+    this.alert = new Alert(() => this.getRect(), data);
     // selector
     this.selector = new Selector(data);
     this.overlayerCEl = h('div', `${cssPrefix}-overlayer-content`)
@@ -945,6 +949,7 @@ export default class Sheet {
       this.contextMenu.el,
       this.userEditing.el,
       this.notification.el,
+      this.alert.el,
       this.modalValidation.el,
       this.sortFilter.el,
     );
@@ -981,6 +986,7 @@ export default class Sheet {
     this.table.resetData(data);
     this.userEditing.resetData(data);
     this.notification.resetData(data, this);
+    this.alert.resetData(data);
   }
 
   loadData(data) {

@@ -152,4 +152,7 @@ export default {
     program: '程式',
     download: '下載',
   },
+  alert: {
+    please_execute_program: '請執行測試程式',
+  }
 };
