@@ -90,7 +90,7 @@ export default class Alert {
       h('span').children(defaultTitle),
       { required: true },
       `${t('notification.title')}:`,
-      30,
+      40,
     );
 
     const downloadLink = h('a').children(this.getFileAttrById(notification.file_id, 'name'));
@@ -100,7 +100,7 @@ export default class Alert {
       downloadLink,
       { required: true },
       `${t('notification.program')}:`,
-      30,
+      40,
     );
 
     const colAndRow = h('span').children(this.getPosition(notification.col, notification.row));
@@ -108,14 +108,14 @@ export default class Alert {
       colAndRow,
       { required: true },
       `${t('notification.position')}:`,
-      30,
+      40,
     );
 
     const timeField = new FormField(
       h('span').children(notification.remind_at),
       { required: true },
       `${t('notification.remind_at')}:`,
-      60,
+      80,
     );
 
     return h('div', 'dialog-content').children('', titleField.el, downloadField.el, position.el, timeField.el);
