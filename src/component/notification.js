@@ -99,7 +99,10 @@ export default class Notification {
   onNotificationUpdate(n, data) {
     let o = Object.assign(n, data);
     if (n.id) {
-      this.updateFn(o);
+      this.updateFn(o)
+        .then(() => {
+          this.show();
+        });
     } else {
       this.tmpNotification = o;
     }
@@ -118,7 +121,7 @@ export default class Notification {
       input,
       { required: true },
       `${t('notification.title')}:`,
-      100,
+      60,
     );
 
     const files = this.data.settings.files;
@@ -132,7 +135,7 @@ export default class Notification {
       ),
       { required: true },
       `${t('notification.file')}:`,
-      100,
+      60,
     );
 
     const colAndRow = h('span').children(this.getPosition(n.col, n.row));
@@ -140,7 +143,7 @@ export default class Notification {
       colAndRow,
       { required: true },
       `${t('notification.position')}:`,
-      100,
+      60,
     );
     const defaultHour = this.getTimePart(n.remind_at, true);
     const hour = new FormSelect(defaultHour,
@@ -162,7 +165,7 @@ export default class Notification {
       time,
       { required: true },
       `${t('notification.remind_at')}:`,
-      100,
+      60,
     );
 
     const users = this.data.settings.users;
@@ -211,6 +214,11 @@ export default class Notification {
       buttons.push(cancelBtn);
     } else {
       const removeBtn = new Button('remove', 'remove').on('click', () => {
+        let r = confirm(t('notification.confirm_to_remove'))
+        if (r !== true) {
+            return;
+        }
+
         this.removeFn(n)
           .then(() => {
             this.render();

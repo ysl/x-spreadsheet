@@ -148,5 +148,6 @@ export default {
     remind_user: '提醒對象',
     please_select_a_file: '請選擇一個檔案',
     at_least_one_user: '至少選擇一個使用者',
+    confirm_to_remove: '確定要刪除嗎？',
   },
 };

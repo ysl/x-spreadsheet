@@ -148,5 +148,6 @@ export default {
     remind_user: 'Remind User',
     please_select_a_file: 'Please select a file',
     at_least_one_user: 'At least select a user',
+    confirm_to_remove: 'Delete?',
   },
 };
