@@ -63,11 +63,7 @@ export default class Notification {
   getFileAttrById(fileId, attr) {
     const files = this.data.settings.files;
     const found = files.find(f => f.id == fileId);
-    if (attr == 'name') {
-      return found ? found.name : '-';
-    } else {
-       return found ? found[attr] : '';
-    }
+    return found ? found[attr] : '';
   }
 
   getTimePart(time, isHour=true) {
@@ -137,7 +133,8 @@ export default class Notification {
     );
 
     const files = this.data.settings.files;
-    const defaultFilename = this.getFileAttrById(n.file_id, 'name');
+    let defaultFilename = this.getFileAttrById(n.file_id, 'name');
+    defaultFilename = defaultFilename ? defaultFilename : '';
     const fileList = new FormField(
       new FormSelect(defaultFilename,
         files,
@@ -151,7 +148,7 @@ export default class Notification {
       30,
     );
 
-    const downloadLink = h('a').children(t('notification.download'));
+    const downloadLink = h('a').children(this.getFileAttrById(n.file_id, 'name'));
     downloadLink.attr('href', this.getFileAttrById(n.file_id, 'url'));
     downloadLink.attr('target', '_blank');
     const downloadField = new FormField(
