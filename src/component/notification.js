@@ -100,8 +100,10 @@ export default class Notification {
     let o = Object.assign(n, data);
     if (n.id) {
       this.updateFn(o)
-        .then(() => {
-          this.show();
+        .then((notifications) => {
+          // Overwrite the data.
+          this.data.notifications = notifications;
+          this.render();
         });
     } else {
       this.tmpNotification = o;
