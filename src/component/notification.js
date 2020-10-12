@@ -189,6 +189,14 @@ export default class Notification {
     const buttons = [];
     if (isNew) {
       const confirmBtn = new Button('ok', 'ok').on('click', () => {
+        // Validation.
+        if (!this.tmpNotification.file_id) {
+          return alert(t('notification.please_select_a_file'));
+        }
+        if (this.tmpNotification.user_ids.length == 0) {
+          return alert(t('notification.at_least_one_user'));
+        }
+
         this.createFn(this.tmpNotification)
           .then(() => {
             this.showCreateForm = false;

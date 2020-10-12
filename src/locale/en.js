@@ -146,5 +146,7 @@ export default {
     file: 'File',
     remind_at: 'Remind At',
     remind_user: 'Remind User',
+    please_select_a_file: 'Please select a file',
+    at_least_one_user: 'At least select a user',
   },
 };
