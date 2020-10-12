@@ -1201,6 +1201,10 @@ export default class DataProxy {
     return this.notificationChanged(action, notification);
   }
 
+  setNotifications(ns) {
+    this.notifications = ns;
+  }
+
   checkUserCanEditCurrentCell(ri = null, ci = null) {
     if (this.settings.user && this.settings.user.editableCells) {
       let sheetId = this.id;

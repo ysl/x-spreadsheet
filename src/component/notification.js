@@ -102,7 +102,7 @@ export default class Notification {
       this.updateFn(o)
         .then((notifications) => {
           // Overwrite the data.
-          this.data.notifications = notifications;
+          this.data.setNotifications(notifications);
           this.render();
         });
     } else {
