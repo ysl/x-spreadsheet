@@ -148,6 +148,7 @@ export default {
     remind_time: 'Execute time',
     remind_user: 'Remind User',
     please_select_a_file: 'Please select a file',
+    please_pick_a_date: 'Please pkck a date',
     at_least_one_user: 'At least select a user',
     confirm_to_remove: 'Delete?',
     program: 'Program',

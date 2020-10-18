@@ -252,6 +252,9 @@ export default class Notification {
         if (!this.tmpNotification.file_id) {
           return alert(t('notification.please_select_a_file'));
         }
+        if (this.tmpNotification.remind_date == '') {
+          return alert(t('notification.please_pick_a_date'));
+        }
         if (this.tmpNotification.user_ids.length == 0) {
           return alert(t('notification.at_least_one_user'));
         }
@@ -302,10 +305,12 @@ export default class Notification {
 
   buildCreateForm() {
     const selector = this.data.selector;
+    const date = new Date();
     this.tmpNotification = {
       title: '',
       col: selector.ci,
       row: selector.ri,
+      remind_date: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
       remind_time: '00:00:00',
       file_id: null,
       user_ids: [],
