@@ -3,6 +3,7 @@ import { cssPrefix } from '../config';
 import { t } from '../locale/locale';
 import FormField from './form_field';
 import { CellRange } from '../core/cell_range';
+import Moment from 'moment';
 
 export default class Alert {
   constructor(viewFn, data) {
@@ -37,18 +38,20 @@ export default class Alert {
 
   timerCb() {
     if (this.data) {
-      const d = new Date();
-      const now = `${this.pad(d.getHours(), 2)}:${this.pad(d.getMinutes(), 2)}:00`;
-      console.log(now)
+      const now = Moment();
+      console.log(now.local().format('YYYY-MM-DD HH:mm:ss'));
+      let count = 0;
       this.data.notifications.every(n => {
-        if (n.remind_time == now) {
+        const target = Moment(`${n.remind_date} ${n.remind_time}`);
+        const diff = Math.round(target.diff(now) / 1000);
+        console.log(`[${count++}] ${n.remind_date} ${n.remind_time} diff=${diff} seconds`);
+        if (Math.abs(diff) < 30 * 60) { // +-30 minutes
           if (this.ignoreNotificationIds.indexOf(n.id) == -1) {
             this.render(n);
+            return false;
           }
-          return false;
-        } else {
-          return true;
         }
+        return true;
       });
     }
   }
