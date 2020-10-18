@@ -64,6 +64,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "js-datepicker": "^5.16.0",
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2"
   },

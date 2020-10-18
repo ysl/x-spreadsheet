@@ -114,7 +114,7 @@ export default class Alert {
     const timeField = new FormField(
       h('span').children(notification.remind_time),
       { required: true },
-      `${t('notification.remind_at')}:`,
+      `${t('notification.remind_time')}:`,
       80,
     );
 

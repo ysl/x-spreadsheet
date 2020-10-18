@@ -6,6 +6,7 @@ import FormInput from './form_input';
 import FormSelect from './form_select';
 import Button from './button';
 import { CellRange } from '../core/cell_range';
+import datepicker from 'js-datepicker';
 
 export default class Notification {
   constructor(viewFn, data) {
@@ -166,6 +167,36 @@ export default class Notification {
       30,
     );
 
+    const defaultRemindDate = n.remind_date ? n.remind_date : '';
+    let dateInput;
+    if (isEditingMode) {
+      dateInput = new FormInput('100px', '');
+      dateInput.val(defaultRemindDate);
+      // Leverage jquery
+      $(dateInput.input.el).click('click', (e) => {
+        let picker = datepicker(e.target, {
+          formatter: (input, date, instance) => {
+            const value = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+            input.value = value;
+          },
+          onSelect: (instance, date) => {
+            this.onNotificationUpdate(n, { remind_date: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() });
+          }
+        });
+        picker.calendarContainer.style.setProperty('font-size', '0.8rem')
+        picker.show();
+        $(dateInput.input.el).off('click');
+      });
+    } else {
+      dateInput = h('span').children(defaultRemindDate);
+    }
+    const remindDateField = new FormField(
+      dateInput,
+      { required: true },
+      `${t('notification.remind_date')}:`,
+      60,
+    );
+
     const defaultHour = this.getTimePart(n.remind_time, true);
     const defaultMinute = this.getTimePart(n.remind_time, false);
     let time;
@@ -186,10 +217,10 @@ export default class Notification {
     } else {
       time = h('span').children(`${defaultHour}:${defaultMinute}`);
     }
-    const timeField = new FormField(
+    const remindTimeField = new FormField(
       time,
       { required: true },
-      `${t('notification.remind_at')}:`,
+      `${t('notification.remind_time')}:`,
       60,
     );
 
@@ -262,7 +293,8 @@ export default class Notification {
       titleField.el,
       position.el,
       isEditingMode ? fileList.el : downloadField.el,
-      timeField.el,
+      remindDateField.el,
+      remindTimeField.el,
       isEditingMode ? userList.el : '',
       isEditingMode ? actions.el : '',
     );
@@ -331,7 +363,6 @@ export default class Notification {
     closeButton.on('click', () => {
       this.hide();
     });
-
 
     header.children(title, (!this.showCreateForm && isEditingMode ? createBtn : ''), closeButton);
     sidebar.children(header);
