@@ -41,7 +41,7 @@ export default class Alert {
       const now = `${this.pad(d.getHours(), 2)}:${this.pad(d.getMinutes(), 2)}:00`;
       console.log(now)
       this.data.notifications.every(n => {
-        if (n.remind_at == now) {
+        if (n.remind_time == now) {
           if (this.ignoreNotificationIds.indexOf(n.id) == -1) {
             this.render(n);
           }
@@ -112,7 +112,7 @@ export default class Alert {
     );
 
     const timeField = new FormField(
-      h('span').children(notification.remind_at),
+      h('span').children(notification.remind_time),
       { required: true },
       `${t('notification.remind_at')}:`,
       80,

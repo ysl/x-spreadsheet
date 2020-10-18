@@ -166,21 +166,21 @@ export default class Notification {
       30,
     );
 
-    const defaultHour = this.getTimePart(n.remind_at, true);
-    const defaultMinute = this.getTimePart(n.remind_at, false);
+    const defaultHour = this.getTimePart(n.remind_time, true);
+    const defaultMinute = this.getTimePart(n.remind_time, false);
     let time;
     if (isEditingMode) {
       let hour = new FormSelect(defaultHour,
         Array.from(Array(24).keys()).map(i => this.pad(i, 2)),
         '100%',
         h => h,
-        h => { this.onNotificationUpdate(n, { remind_at: this.setTimeString(n.remind_at, h)}) }
+        h => { this.onNotificationUpdate(n, { remind_time: this.setTimeString(n.remind_time, h)}) }
       );
       let minute = new FormSelect(defaultMinute,
         Array.from(Array(60).keys()).map(i => this.pad(i, 2)),
         '100%',
         m => m,
-        m => { this.onNotificationUpdate(n, { remind_at: this.setTimeString(n.remind_at, null, m)}) }
+        m => { this.onNotificationUpdate(n, { remind_time: this.setTimeString(n.remind_time, null, m)}) }
       );
       time = h('span').children(hour.el, ':', minute.el);
     } else {
@@ -274,7 +274,7 @@ export default class Notification {
       title: '',
       col: selector.ci,
       row: selector.ri,
-      remind_at: '00:00:00',
+      remind_time: '00:00:00',
       file_id: null,
       user_ids: [],
     }
