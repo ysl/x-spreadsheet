@@ -128,14 +128,21 @@ export default class Alert {
       40,
     );
 
-    const timeField = new FormField(
+    const remindDateField = new FormField(
+      h('span').children(notification.remind_date),
+      { required: true },
+      `${t('notification.remind_date')}:`,
+      80,
+    );
+
+    const remindTimeField = new FormField(
       h('span').children(notification.remind_time),
       { required: true },
       `${t('notification.remind_time')}:`,
       80,
     );
 
-    return h('div', 'dialog-content').children('', titleField.el, downloadField.el, position.el, timeField.el);
+    return h('div', 'dialog-content').children('', titleField.el, downloadField.el, position.el, remindDateField.el, remindTimeField.el);
   }
 
   render(notification) {
