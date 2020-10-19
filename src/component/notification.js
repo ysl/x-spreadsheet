@@ -199,7 +199,7 @@ export default class Notification {
             this.onNotificationUpdate(n, { remind_date: date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() });
           }
         });
-        picker.calendarContainer.style.setProperty('font-size', '0.8rem')
+        picker.calendarContainer.style.setProperty('font-size', '0.7rem')
         picker.show();
         $(dateInput.input.el).off('click');
       });
