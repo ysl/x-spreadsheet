@@ -97,7 +97,21 @@ export default class Alert {
     );
 
     const downloadLink = h('a').children(this.getFileAttrById(notification.file_id, 'name'));
-    downloadLink.attr('href', this.getFileAttrById(notification.file_id, 'url'));
+    let url = '';
+    try {
+      let path = this.getFileAttrById(notification.file_id, 'url');
+      let urlObj = new URL(path, window.location.origin);
+      let searchParams = urlObj.searchParams;
+      const excelId = this.data.file_id;
+      const sheetId = this.data.id;
+      searchParams.set('excel_id', excelId);
+      searchParams.set('sheet_id', sheetId);
+      urlObj.search = searchParams.toString();
+      url = urlObj.toString();
+    } catch (e) {
+      // Ignore
+    }
+    downloadLink.attr('href', url);
     downloadLink.attr('target', '_blank');
     const downloadField = new FormField(
       downloadLink,
