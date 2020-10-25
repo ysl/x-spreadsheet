@@ -363,10 +363,10 @@ function renderImages(fw, fh, tx, ty, x, y) {
     data.images.forEach((image) => {
       let ltCellInfo = data.cellRect(image.leftTopRow, image.leftTopCol);
       let rbCellInfo = data.cellRect(image.rightBottomRow, image.rightBottomCol);
-      let imageX = ltCellInfo.left + fw - x;
-      let imageY = ltCellInfo.top + fh - y;
-      let width = rbCellInfo.left - ltCellInfo.left;
-      let height = rbCellInfo.top - ltCellInfo.top;
+      let imageX = ltCellInfo.left + fw - x + image.leftTopColOff;
+      let imageY = ltCellInfo.top + fh - y + image.leftTopRowOff;
+      let width = (rbCellInfo.left + image.rightBottomColOff) - (ltCellInfo.left + image.leftTopColOff);
+      let height = (rbCellInfo.top + image.rightBottomRowOff) - (ltCellInfo.top + image.leftTopRowOff);
       // console.log(fw, fh, tx, ty, x, y, imageX, imageY);
       draw.drawImage(image.url, imageX, imageY, width, height);
     });
