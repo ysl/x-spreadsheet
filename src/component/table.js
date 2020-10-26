@@ -359,14 +359,16 @@ function renderFreezeHighlightLine(fw, fh, ftw, fth) {
 
 function renderImages(fw, fh, tx, ty, x, y) {
   const { draw, data } = this;
+  // The offset value is from Exceljs lib.
+  const CELL_OFFSET_OF_IMAGE = 12000; // TODO: find the best value.
   if (data.images && Array.isArray(data.images)) {
     data.images.forEach((image) => {
       let ltCellInfo = data.cellRect(image.leftTopRow, image.leftTopCol);
       let rbCellInfo = data.cellRect(image.rightBottomRow, image.rightBottomCol);
-      let imageX = ltCellInfo.left + fw - x + image.leftTopColOff;
-      let imageY = ltCellInfo.top + fh - y + image.leftTopRowOff;
-      let width = (rbCellInfo.left + image.rightBottomColOff) - (ltCellInfo.left + image.leftTopColOff);
-      let height = (rbCellInfo.top + image.rightBottomRowOff) - (ltCellInfo.top + image.leftTopRowOff);
+      let imageX = ltCellInfo.left + fw - x + image.leftTopColOff / CELL_OFFSET_OF_IMAGE;
+      let imageY = ltCellInfo.top + fh - y + image.leftTopRowOff / CELL_OFFSET_OF_IMAGE;
+      let width = (rbCellInfo.left + image.rightBottomColOff / CELL_OFFSET_OF_IMAGE) - (ltCellInfo.left + image.leftTopColOff / CELL_OFFSET_OF_IMAGE);
+      let height = (rbCellInfo.top + image.rightBottomRowOff / CELL_OFFSET_OF_IMAGE) - (ltCellInfo.top + image.leftTopRowOff / CELL_OFFSET_OF_IMAGE);
       // console.log(fw, fh, tx, ty, x, y, imageX, imageY);
       draw.drawImage(image.url, imageX, imageY, width, height);
     });
