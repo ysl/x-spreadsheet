@@ -738,7 +738,7 @@ export default class DataProxy {
         this.merges.add(selector.range);
         // delete merge cells
         this.rows.deleteCells(selector.range);
-        this.cellsDeleted(selector.range, what);
+        this.cellsDeleted(selector.range, 'merge');
         // console.log('cell:', cell, this.d);
         this.rows.setCell(sri, sci, cell);
       });
