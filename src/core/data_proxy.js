@@ -80,6 +80,9 @@ import { t } from '../locale/locale';
  *  ],
  *  notifications: [
  *   { title: '', col: 1, row: 2, file_id: 3, user_ids: [] }
+ *  ],
+ *  timeReports: [
+ *   { user_id, 3, col: 3, row: 4, reported_at: '2020-10-10 8:00:00' }
  *  ]
  * }
  */
@@ -356,6 +359,7 @@ export default class DataProxy {
     this.comments = {};
     this.editingUsers = [];
     this.notifications = [];
+    this.timeReports = [];
     // save data end
 
     // don't save object
@@ -373,6 +377,8 @@ export default class DataProxy {
     // Export for index.js.
     this.editingUsersChanged = () => {};
     this.notificationChanged = () => {};
+    this.timeReportChanged = () => {};
+    this.updateReportedAt = () => {};
   }
 
   addValidation(mode, ref, validator) {
@@ -1204,6 +1210,18 @@ export default class DataProxy {
 
   setNotifications(ns) {
     this.notifications = ns;
+  }
+
+  changeTimeReport(report) {
+    this.timeReportChanged(report);
+  }
+
+  updateReportedAt(report) {
+    return this.updateReportedAt(report);
+  }
+
+  setTimeReports(rs) {
+    this.timeReports = rs;
   }
 
   checkUserCanEditCurrentCell(ri = null, ci = null) {

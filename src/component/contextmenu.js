@@ -28,6 +28,7 @@ const menuItems = [
   // Customized
   { key: 'user-editable', title: tf('contextmenu.usereditable') },
   { key: 'notification', title: tf('contextmenu.notification') },
+  { key: 'time-report', title: tf('contextmenu.timeReport') },
 ];
 
 function buildMenuItem(item) {
@@ -71,7 +72,16 @@ export default class ContextMenu {
       hideEl.hide();
     }
 
+    // Notification
     hideEl = this.menuItems[22];
+    if (mode === 'cell') {
+      hideEl.show();
+    } else {
+      hideEl.hide();
+    }
+
+    // Time report
+    hideEl = this.menuItems[23];
     if (mode === 'cell') {
       hideEl.show();
     } else {

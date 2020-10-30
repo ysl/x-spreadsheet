@@ -425,6 +425,16 @@ class Draw {
     ctx.restore();
   }
 
+  highlightTimeReportCell(box) {
+    const { ctx } = this;
+    const { x, y, width, height } = box;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(0, 255, 0, .85)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(npx(x), npx(y) , npx(width), npx(height));
+    ctx.restore();
+  }
+
   rect(box, dtextcb) {
     const { ctx } = this;
     const {

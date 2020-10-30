@@ -45,6 +45,7 @@ export default {
     cellnoneditable: 'Disable editing',
     usereditable: 'User editing',
     notification: 'Execute Program Notification',
+    timeReport: 'Time Report',
   },
   userediting: {
     allowCellEditing: 'Allow cell editing'
@@ -153,5 +154,12 @@ export default {
     confirm_to_remove: 'Delete?',
     program: 'Program',
     download: 'Download',
+  },
+  timereport: {
+    set_time_report_user: 'Set time report for users',
+    none: 'None',
+    current_time: 'Current time',
+    please_enter_ok_to_report_time: 'Please enter OK to report.',
+    report_successfully: 'Report successfully',
   },
 };

@@ -1220,6 +1220,50 @@ form fieldset {
   }
 }
 
+.@{css-prefix}-time_report {
+  position: absolute;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+
+  .dialog {
+    margin: 100px auto;
+    padding: 20px;
+    width: 400px;
+    height: 300px;
+    background-color: #fff;
+    border-radius: 5px;
+
+    .dialog-header {
+      margin-bottom: 10px;
+      font-size: 28px;
+      .close-btn {
+        float: right;
+        margin-top: -10px;
+        padding: 10px;
+        cursor: pointer;
+        font-family: sans-serif;
+      }
+    }
+
+    .user-list {
+      overflow-y: scroll;
+      font-size: 20px;
+      input {
+        margin: 4px;
+        width: 15px;
+        height: 15px;
+      }
+      .user-name {
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
 @media screen and (min-width: 320px) and (max-width: 480px) {
   .@{css-prefix}-toolbar {
     display: none;

@@ -10,6 +10,7 @@ import ContextMenu from './contextmenu';
 import UserEditing from './user_editing';
 import Notification from './notification'
 import Alert from './alert';
+import TimeReport from './time_report';
 import Table from './table';
 import Toolbar from './toolbar/index';
 import ModalValidation from './modal_validation';
@@ -69,7 +70,7 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
   if (ri === -1 && ci === -1) return;
   const {
     table, selector, toolbar, data,
-    contextMenu, notification,
+    contextMenu, notification, timeReport,
   } = this;
   if (multiple) {
     contextMenu.setMode((ri === -1 || ci === -1) ? 'row-col' : 'range');
@@ -85,6 +86,7 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
     selector.set(ri, ci, indexesUpdated);
     this.trigger('cell-selected', cell, ri, ci);
     notification.onCellSelected(cell, ri, ci);
+    timeReport.onCellSelected(cell, ri, ci);
   }
   toolbar.reset();
   table.render();
@@ -592,6 +594,14 @@ function changeNotification(action, notification) {
   return this.data.changeNotification(action, notification);
 }
 
+function changeTimeReport(report) {
+  this.data.changeTimeReport(report);
+}
+
+function updateReportedAt(report) {
+  return this.data.updateReportedAt(report);
+}
+
 function sheetInitEvents() {
   const {
     selector,
@@ -605,6 +615,7 @@ function sheetInitEvents() {
     userEditing,
     notification,
     alert,
+    timeReport,
     toolbar,
     modalValidation,
     sortFilter,
@@ -689,6 +700,7 @@ function sheetInitEvents() {
   userEditing.change = (user) => {
     changeUserEditableCell.call(this, user);
   };
+  // notification
   notification.createFn = (notification) => {
     return changeNotification.call(this, 'create', notification);
   }
@@ -698,6 +710,17 @@ function sheetInitEvents() {
   notification.removeFn = (notification) => {
     return changeNotification.call(this, 'remove', notification);
   }
+  // time report
+  timeReport.change = (report) => {
+    changeTimeReport.call(this, report);
+  };
+  timeReport.updateReportedAt = (report) => {
+    return updateReportedAt.call(this, report);
+  }
+  timeReport.tableRender = () => {
+    this.table.render();
+  }
+
   // modal validation
   modalValidation.change = (action, ...args) => {
     if (action === 'save') {
@@ -727,6 +750,8 @@ function sheetInitEvents() {
       userEditing.render();
     } else if (type === 'notification') {
       notification.render();
+    } else if (type === 'time-report') {
+      timeReport.render();
     } else {
       insertDeleteRowColumn.call(this, type);
     }
@@ -927,6 +952,8 @@ export default class Sheet {
     this.notification = new Notification(() => this.getRect(), data, this);
     // alert
     this.alert = new Alert(() => this.getRect(), data);
+    // time report
+    this.timeReport = new TimeReport(() => this.getRect(), data);
     // selector
     this.selector = new Selector(data);
     this.overlayerCEl = h('div', `${cssPrefix}-overlayer-content`)
@@ -950,6 +977,7 @@ export default class Sheet {
       this.userEditing.el,
       this.notification.el,
       this.alert.el,
+      this.timeReport.el,
       this.modalValidation.el,
       this.sortFilter.el,
     );
@@ -987,6 +1015,7 @@ export default class Sheet {
     this.userEditing.resetData(data);
     this.notification.resetData(data, this);
     this.alert.resetData(data);
+    this.timeReport.resetData(data);
   }
 
   loadData(data) {

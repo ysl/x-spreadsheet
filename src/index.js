@@ -17,6 +17,7 @@ class Spreadsheet {
 
     // Allow outside to overwrite.
     this.notificationChangedFn = () => { return Promise.resolve(); };
+    this.timeReportedAtChangedFn = () => { return Promise.resolve(); };
 
     if (typeof selectors === 'string') {
       targetEl = document.querySelector(selectors);
@@ -57,11 +58,18 @@ class Spreadsheet {
       });
       this.sheet.trigger('cells-deleted', range, what);
     }
+    // Overwrite the function.
     d.editingUsersChanged = (user) => {
       this.sheet.trigger('editing-users-changed', user);
     }
     d.notificationChanged = (action, notification) => {
       return this.notificationChangedFn(action, notification);
+    }
+    d.timeReportChanged = (report) => {
+      this.sheet.trigger('time-report-changed', report);
+    }
+    d.updateReportedAt = (report) => {
+      return this.timeReportedAtChangedFn(report);
     }
     this.datas.push(d);
     // console.log('d:', n, d, this.datas);

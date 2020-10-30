@@ -45,6 +45,7 @@ export default {
     cellnoneditable: '不可编辑',
     usereditable: '使用者編輯權限',
     notification: '執行程式提醒',
+    timeReport: '回報完工時間',
   },
   userediting: {
     allowCellEditing: '允許使用者編輯此儲存格'
@@ -153,5 +154,12 @@ export default {
     confirm_to_remove: '確定要刪除嗎？',
     program: '程式',
     download: '下載',
+  },
+  timereport: {
+    set_time_report_user: '設定回報完工時間的人員',
+    none: '無',
+    current_time: '現在時間',
+    please_enter_ok_to_report_time: '請輸入 OK 來回報完工時間。',
+    report_successfully: '回報成功',
   },
 };

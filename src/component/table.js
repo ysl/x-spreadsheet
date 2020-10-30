@@ -226,6 +226,36 @@ function renderContent(viewRange, fw, fh, tx, ty) {
     }
   }
 
+  // 8 highlight current user time report cell
+  if (data.settings.mode == 'limit') {
+    if (data.settings.user.timeReports) {
+      data.settings.user.timeReports.forEach((r) => {
+        if (data.id == r.sheet_id) {
+          viewRange.each((ri, ci) => { // Check the cell in view
+            if (ri == r.row && ci == r.col && r.user_id != null) {
+              const dbox = getDrawBox(data, r.row, r.col);
+              draw.highlightTimeReportCell(dbox);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  // 9 highlight other operators' time report cells  (only for admin)
+  if (data.settings.mode == 'edit') {
+    if (data.timeReports) {
+      data.timeReports.forEach((r) => {
+        viewRange.each((ri, ci) => { // Check the cell in view
+          if (ri == r.row && ci == r.col && r.user_id != null) {
+            const dbox = getDrawBox(data, r.row, r.col);
+            draw.highlightTimeReportCell(dbox);
+          }
+        });
+      });
+    }
+  }
+
   draw.restore();
 }
 
