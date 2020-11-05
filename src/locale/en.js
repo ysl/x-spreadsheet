@@ -159,7 +159,7 @@ export default {
     set_time_report_user: 'Set time report for users',
     none: 'None',
     current_time: 'Current time',
-    please_enter_ok_to_report_time: 'Please enter OK to report.',
+    please_click_confirm_to_report_time: 'Please confirm to report time.',
     report_successfully: 'Report successfully',
   },
 };

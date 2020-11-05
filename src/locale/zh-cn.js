@@ -159,7 +159,7 @@ export default {
     set_time_report_user: '設定回報完工時間的人員',
     none: '無',
     current_time: '現在時間',
-    please_enter_ok_to_report_time: '請輸入 OK 來回報完工時間。',
+    please_click_confirm_to_report_time: '請點擊確認來回報完工時間。',
     report_successfully: '回報成功',
   },
 };

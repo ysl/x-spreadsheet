@@ -30,8 +30,8 @@ export default class TimeReport {
     });
     if (found && found.reported_at == null) {
       let now = Moment().local().format('YYYY-MM-DD HH:mm:ss');
-      let input = prompt(t('timereport.current_time') + ': ' + now + "\n" + t('timereport.please_enter_ok_to_report_time'));
-      if (input && input.toLowerCase().trim() == 'ok') {
+      let input = confirm(t('timereport.current_time') + ': ' + now + "\n" + t('timereport.please_click_confirm_to_report_time'));
+      if (input === true) {
         this.updateReportedAt(found)
           .then((reports) => {
             // Overwrite the data.
