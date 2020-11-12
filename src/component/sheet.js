@@ -529,7 +529,13 @@ function insertDeleteRowColumn(type) {
   } else if (type === 'delete-cell-format') {
     data.deleteCell('format');
   } else if (type === 'delete-cell-text') {
-    data.deleteCell('text');
+    if (data.settings.mode === 'edit') {
+      data.deleteCell('text');
+    } else if (data.settings.mode === 'limit') {
+      if (data.checkUserCanEditCurrentCell()) {
+        data.deleteCell('text');
+      }
+    }
   } else if (type === 'cell-printable') {
     data.setSelectedCellAttr('printable', true);
   } else if (type === 'cell-non-printable') {
