@@ -20,7 +20,7 @@ const PAGER_SIZES = [
   ['B5', 6.93, 9.84],
 ];
 
-const PAGER_ORIENTATIONS = ['landscape', 'portrait'];
+const PAGER_ORIENTATIONS = ['portrait', 'landscape'];
 
 function inches2px(inc) {
   return parseInt(96 * inc, 10);

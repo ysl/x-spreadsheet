@@ -53,7 +53,7 @@ export default {
   print: {
     size: '紙張大小',
     orientation: '方向',
-    orientations: ['橫向', '縱向'],
+    orientations: ['縱向', '橫向'],
   },
   format: {
     normal: '正常',
