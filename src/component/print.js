@@ -56,7 +56,7 @@ export default class Print {
     this.paper = {
       w: inches2px(PAGER_SIZES[0][1]),
       h: inches2px(PAGER_SIZES[0][2]),
-      padding: 50,
+      padding: 40,
       orientation: PAGER_ORIENTATIONS[0],
       get width() {
         return this.orientation === 'landscape' ? this.h : this.w;
@@ -115,9 +115,10 @@ export default class Print {
     const scale = iwidth / cr.w;
     let left = padding;
     const top = padding;
-    if (scale > 1) {
-      left += (iwidth - cr.w) / 2;
-    }
+    // FIXME:
+    // if (scale > 1) {
+    //   left += (iwidth - cr.w) / 2;
+    // }
     let ri = 0;
     let yoffset = 0;
     this.contentEl.html('');
@@ -131,6 +132,7 @@ export default class Print {
     for (let i = 0; i < pages; i += 1) {
       let th = 0;
       let yo = 0;
+      let ri2 = ri; // For image render.
       const wrap = h('div', `${cssPrefix}-canvas-card`);
       const canvas = h('canvas', `${cssPrefix}-canvas`);
       this.canvases.push(canvas.el);
@@ -164,6 +166,36 @@ export default class Print {
         renderCell(draw, data, sri, sci, yof);
       });
       draw.restore();
+
+      // Render images.
+      let th2 = 0;
+      for (; ri2 <= cr.eri; ri2 += 1) {
+        const rh = data.rows.getHeight(ri);
+        th2 += rh;
+        if (th2 < iheight) {
+          for (let ci = 0; ci <= cr.eci; ci += 1) {
+            let fw = left, fh = top, x = 0, y = yoffset;
+            const CELL_OFFSET_OF_IMAGE = 12000; // TODO: find the best value.
+            if (data.images && Array.isArray(data.images)) {
+              data.images.forEach((image) => {
+                // Check the image row/col.
+                if (image.leftTopRow == ri2 && image.leftTopCol == ci) {
+                  let ltCellInfo = data.cellRect(image.leftTopRow, image.leftTopCol);
+                  let rbCellInfo = data.cellRect(image.rightBottomRow, image.rightBottomCol);
+                  let imageX = ltCellInfo.left + fw - x + image.leftTopColOff / CELL_OFFSET_OF_IMAGE;
+                  let imageY = ltCellInfo.top + fh - y + image.leftTopRowOff / CELL_OFFSET_OF_IMAGE;
+                  let width = (rbCellInfo.left + image.rightBottomColOff / CELL_OFFSET_OF_IMAGE) - (ltCellInfo.left + image.leftTopColOff / CELL_OFFSET_OF_IMAGE);
+                  let height = (rbCellInfo.top + image.rightBottomRowOff / CELL_OFFSET_OF_IMAGE) - (ltCellInfo.top + image.leftTopRowOff / CELL_OFFSET_OF_IMAGE);
+                  // console.log(fw, fh, tx, ty, x, y, imageX, imageY);
+                  draw.drawImage(image.url, imageX, imageY, width, height);
+                }
+              });
+            }
+          }
+        } else {
+          break;
+        }
+      }
 
       mViewRange.sri = mViewRange.eri;
       mViewRange.sci = mViewRange.eci;
